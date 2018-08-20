@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour {
 	[Tooltip("The parent which the deathFX follow")][SerializeField] GameObject parent;
 	
 	[SerializeField] int scorePerHit = 12;
+    [SerializeField] int healthPoints = 8;
+
 	ScoreBoard scoreBoard;
 	// Use this for initialization
 	void Start ()
@@ -43,12 +45,27 @@ public class Enemy : MonoBehaviour {
 		
 	}
 
-	private void OnParticleCollision(GameObject other) 
-	{
-		print("Particle collided with enemy" + name);
+	private void OnParticleCollision(GameObject other)
+    {
+        OnProcessHit();
+        if (healthPoints <= 0)
+        {
+            OnEnemyKilled();
+        }
+    }
+
+    private void OnProcessHit()
+    {
+        print("Particle collided with enemy" + name);
+        // TODO consider effects
         scoreBoard.OnScoreHit(scorePerHit);
-		GameObject FX = Instantiate(deathFX,transform.position,Quaternion.identity);
-		FX.transform.SetParent(parent.transform);
-		Destroy(gameObject);
-	}
+        healthPoints--;
+    }
+
+    private void OnEnemyKilled()
+    {        
+        GameObject FX = Instantiate(deathFX, transform.position, Quaternion.identity);
+        FX.transform.SetParent(parent.transform);
+        Destroy(gameObject);
+    }
 }

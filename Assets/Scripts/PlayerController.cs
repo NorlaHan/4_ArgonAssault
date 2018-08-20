@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] float ctrlPitchFactor = -20f;
     [SerializeField] float ctrlRowFactor = -20f;
 
+    [SerializeField] GameObject[] guns;
     Vector3 rawOffset; 
     float xOffset, yOffset , zOffset, xThrow, yThrow;
     bool isControlEnabled = true;
@@ -43,9 +44,47 @@ public class PlayerController : MonoBehaviour {
         {
             OnProcessTranslation();
             OnProcessRotation();
+            OnProcessFiring();
         }
         
     }
+
+    private void OnProcessFiring()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire"))
+        {
+            ActivateGuns();
+        }
+        else
+        {
+            DeactivateGuns();
+        }
+    }
+
+    private void DeactivateGuns()
+    {
+        foreach (GameObject item in guns)
+        {
+            //item.SetActive(false);
+            ParticleSystem gun  = item.GetComponent<ParticleSystem>();
+            gun.loop = false;
+        }
+    }
+
+    private void ActivateGuns()
+    {
+        foreach (GameObject item in guns)
+        {
+            ParticleSystem gun  = item.GetComponent<ParticleSystem>();
+            if (!gun.loop)
+            {
+                item.SetActive(false);
+                item.SetActive(true);
+                gun.loop = true;
+            }
+        }
+    }
+
     private void OnProcessRotation()
     {
         float pitch = transform.localPosition.y * posPitchFactor + yThrow * ctrlPitchFactor;
