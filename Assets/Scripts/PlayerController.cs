@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
+// TODO Work-out why player gets super fast on start.
 // TODO Player collide with environment and enemies.
-// TODO Player shoots bullet.
 // TODO Fix the bullet slower than player.
 // TODO enemies action.
 
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour {
         xOffset = rawOffset.x;
         yOffset = rawOffset.y;
     }
-	
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour {
         }
         
     }
-
     private void OnProcessRotation()
     {
         float pitch = transform.localPosition.y * posPitchFactor + yThrow * ctrlPitchFactor;
@@ -72,6 +71,6 @@ public class PlayerController : MonoBehaviour {
     private void OnPlayerDeath()    // called by string reference
     {
         print("Player losing control !!!");
-        isControlEnabled = false;
+        // isControlEnabled = false;
     }
 }

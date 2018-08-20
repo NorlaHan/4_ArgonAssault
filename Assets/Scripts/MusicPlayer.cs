@@ -6,18 +6,15 @@ public class MusicPlayer : MonoBehaviour {
 
     private void Awake()
     {
+        int numMusicPlayer = FindObjectsOfType<MusicPlayer>().Length;
+        print("Number if music players in the scene : " + numMusicPlayer);
+        if (numMusicPlayer>1)
+        {
+            Destroy(gameObject);
+        }else
+        {
         DontDestroyOnLoad(gameObject);
+        }
     }
 
-
-
-    // Use this for initialization
-    void Start () {
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

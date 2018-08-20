@@ -7,8 +7,13 @@ using UnityEngine.SceneManagement;  // Ok as ling as this is the only script tha
 public class CollisionHandler : MonoBehaviour {
 
     [Tooltip("In seconds")][SerializeField] float levelDelay = 1f;
+    [Tooltip("In seconds")][SerializeField] int crashPenalty = -10;
     [Tooltip("FX prefab on player")][SerializeField] GameObject deathFX;
 
+    ScoreBoard scoreBoard;
+    private void Start() {
+        scoreBoard = FindObjectOfType<ScoreBoard>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Enemies")
@@ -19,15 +24,15 @@ public class CollisionHandler : MonoBehaviour {
         {
             print("Player Hit " + other.name);
         }
+        scoreBoard.OnScoreHit(crashPenalty);
         StartDeathSequence();
-        
     }
 
     private void StartDeathSequence()
     {
         SendMessage("OnPlayerDeath");
         deathFX.SetActive(true);
-        Invoke("OnReloadScene",levelDelay);
+        // Invoke("OnReloadScene",levelDelay);
     }
 
     private void OnReloadScene()    // String reference
