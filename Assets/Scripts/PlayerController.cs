@@ -53,37 +53,52 @@ public class PlayerController : MonoBehaviour {
     {
         if (CrossPlatformInputManager.GetButton("Fire"))
         {
-            ActivateGuns();
+            SetGunsActive(true);
         }
         else
         {
-            DeactivateGuns();
+            SetGunsActive(false);
         }
     }
 
-    private void DeactivateGuns()
+    private void SetGunsActive(bool isActive)
     {
-        foreach (GameObject item in guns)
+         foreach (GameObject gun in guns)   // Aware may effect
         {
-            //item.SetActive(false);
-            ParticleSystem gun  = item.GetComponent<ParticleSystem>();
-            gun.loop = false;
+            var emission = gun.GetComponent<ParticleSystem>().emission;
+            emission.enabled = isActive;
         }
     }
 
-    private void ActivateGuns()
-    {
-        foreach (GameObject item in guns)
-        {
-            ParticleSystem gun  = item.GetComponent<ParticleSystem>();
-            if (!gun.loop)
-            {
-                item.SetActive(false);
-                item.SetActive(true);
-                gun.loop = true;
-            }
-        }
-    }
+    #region
+    // private void DeactivateGuns()
+    // {
+    //     foreach (GameObject item in guns)
+    //     {
+    //         //item.SetActive(false);
+    //         ParticleSystem gun  = item.GetComponent<ParticleSystem>();
+    //         gun.loop = false;
+    //     }
+    // }
+
+    // private void SetGunsActive()
+    // {
+    //     foreach (GameObject item in guns)
+    //     {   
+    //         if (!item.active)
+    //         {
+    //             item.SetActive(true);
+    //         }            
+    //         ParticleSystem gun  = item.GetComponent<ParticleSystem>();
+    //         if (!gun.loop)
+    //         {
+    //             item.SetActive(false);
+    //             item.SetActive(true);
+    //             gun.loop = true;
+    //         }
+    //     }
+    // }
+    #endregion
 
     private void OnProcessRotation()
     {
